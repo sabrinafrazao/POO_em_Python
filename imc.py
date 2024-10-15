@@ -3,6 +3,7 @@ class Calculadora:
     def __init__(self, peso, h):
         self.peso = peso
         self.h = h
+        self.imc = 0.0
 
     def calcular_imc(self):
         imc_res = self.peso / (self.h**2)

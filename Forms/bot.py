@@ -23,7 +23,6 @@ https://documentation.botcity.dev/tutorials/python-automations/web/
 
 
 # Import for the Web Bot
-from xml.etree.ElementPath import xpath_tokenizer
 from botcity.web import WebBot, Browser, By
 
 # Import for integration with BotCity Maestro SDK
@@ -33,37 +32,35 @@ from webdriver_manager.chrome import ChromeDriverManager
 # Disable errors if we are not connected to Maestro
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
-class Produto:
-
-    def __init__(self, nome, preco):
-        self._nome = nome
-        self._preco = preco
-        self._qtd = 0  
-
-    @property
-    def nome(self):
-        return self._nome
-
-    @property
-    def preco(self):
-        return self._preco
-
-    @property
-    def qtd(self):
-        return self._qtd
-
-    @qtd.setter
-    def atualizar(self, nova_qtd):
-        if nova_qtd >= 0:
-            self._qtd = nova_qtd
-            print(f"A quantidade de {self.nome} foi atualizada para {self._qtd} unidades.")
-        else:
-            print("A quantidade não pode ser negativa.")
+class FormBase:
+    def __init__(self, nomeCompleto, usuario, senha, email, nascimento, sexo):
+        self.nomeCompleto = nomeCompleto
+        self.usuario = usuario
+        self.senha = senha
+        self.email = email
+        self.nascimento = nascimento
+        self.sexo = sexo
 
     def exibir(self):
-        print(f"Produto: {self.nome}")
-        print(f"Preço: R${self.preco:.2f}")
-        print(f"Quantidade em estoque: {self.qtd}")
+        ...
+
+class FormContato(FormBase):
+    def __init__(self, nomeCompleto,  email, contato):
+
+        FormBase.__int__(self, nomeCompleto, email)
+        self.contato = contato
+
+    def exibir_contato():
+        ...
+
+
+class FormLogin(FormBase):
+    def __int__(self, usuario, senha):
+        FormBase.__init__(self, usuario, senha)
+
+
+    def exibir_login():
+        ...
 
 
 def main():
@@ -88,18 +85,18 @@ def main():
     bot.driver_path = ChromeDriverManager().install()
 
     # Opens the BotCity website.
-    bot.browse("http://127.0.0.1:5500/fomulario_produto/forms.html")
+    bot.browse("https://www.botcity.dev")
 
-    Produto.nome = "Refrigerante"
-    Produto.preco = 12
-    Produto.qtd = 10
-    bot.find_element('//*[@id="nome"]', By.XPATH ).send_keys(Produto.nome)
-    bot.find_element('//*[@id="preco"]', By.XPATH ).send_keys(Produto.preco)
-    bot.find_element('//*[@id="qtd"]', By.XPATH ).send_keys(Produto.qtd)
+    # Implement here your logic...
 
-
-
-    bot.find('//*[@id="submit"]', By.XPATH).click() 
+    FormBase.nomeCompleto = "Sabrina da Silva Frazão"
+    FormBase.usuario = "sabrina"
+    FormBase.senha = "ifam@zl"
+    
+    FormLogin.usuario = "sabrina"
+    FormContato.senha = "ifam@zl"
+    
+    
 
     # Wait 3 seconds before closing
     bot.wait(3000)
