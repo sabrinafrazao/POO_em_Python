@@ -34,36 +34,47 @@ from webdriver_manager.chrome import ChromeDriverManager
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
 class Produto:
-
-    def __init__(self, nome, preco):
+    def __init__(self, nome, preco, quantidade=0):
         self._nome = nome
         self._preco = preco
-        self._qtd = 0  
+        self._quantidade = quantidade
 
     @property
     def nome(self):
         return self._nome
 
+    @nome.setter
+    def nome(self, novo_nome):
+        self._nome = novo_nome
+
     @property
     def preco(self):
         return self._preco
 
-    @property
-    def qtd(self):
-        return self._qtd
+    @preco.setter
+    def preco(self, novo_preco):
+        if novo_preco >= 0:
+            self._preco = novo_preco
+        else:
+            print("O preço não pode ser negativo.")
 
-    @qtd.setter
-    def atualizar(self, nova_qtd):
-        if nova_qtd >= 0:
-            self._qtd = nova_qtd
-            print(f"A quantidade de {self.nome} foi atualizada para {self._qtd} unidades.")
+    @property
+    def quantidade(self):
+        return self._quantidade
+
+    @quantidade.setter
+    def quantidade(self, nova_quantidade):
+        if nova_quantidade >= 0:
+            self._quantidade = nova_quantidade
+            print(f"A quantidade de {self.nome} foi atualizada para {self.quantidade} unidades.")
         else:
             print("A quantidade não pode ser negativa.")
 
-    def exibir(self):
-        print(f"Produto: {self.nome}")
-        print(f"Preço: R${self.preco:.2f}")
-        print(f"Quantidade em estoque: {self.qtd}")
+    def exibir_informacoes(self):
+        print(f"Produto: {self.nome}, Preço: R${self.preco:.2f}, Quantidade: {self.quantidade}")
+
+
+
 
 
 def main():
@@ -90,16 +101,22 @@ def main():
     # Opens the BotCity website.
     bot.browse("http://127.0.0.1:5500/fomulario_produto/forms.html")
 
-    Produto.nome = "Refrigerante"
-    Produto.preco = 12
-    Produto.qtd = 10
-    bot.find_element('//*[@id="nome"]', By.XPATH ).send_keys(Produto.nome)
-    bot.find_element('//*[@id="preco"]', By.XPATH ).send_keys(Produto.preco)
-    bot.find_element('//*[@id="qtd"]', By.XPATH ).send_keys(Produto.qtd)
+    # Criação do produto
+    produto = Produto(nome="Refrigerante", preco=12.50)
 
+    # Atualiza a quantidade do produto
+    Produto.quantidade = 20 
 
+    # Exibe informações do produto
+    produto.exibir_informacoes()
 
-    bot.find('//*[@id="submit"]', By.XPATH).click() 
+    # Preenche o formulário
+    bot.find_element('//*[@id="nome"]', By.XPATH).send_keys(produto.nome)
+    bot.find_element('//*[@id="preco"]', By.XPATH).send_keys(str(produto.preco))
+    bot.find_element('//*[@id="quantidade"]', By.XPATH).send_keys(str(produto.quantidade))
+
+    # Envia o formulário
+    bot.find_element('/html/body/form/button', By.XPATH).click()
 
     # Wait 3 seconds before closing
     bot.wait(3000)
