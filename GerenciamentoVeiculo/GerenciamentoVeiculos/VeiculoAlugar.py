@@ -7,27 +7,27 @@ class VeiculoAlugar:
 
     @property
     def nome(self):
-        return self.nome
+        return self.__nome
     
     @nome.setter
     def nome(self, valor):
-        self.nome = valor
+        self.__nome = valor
     
     @property
     def ano(self):
-        return self.ano
+        return self.__ano
     
     @ano.setter
     def ano(self, valor):
-        self.ano = valor
+        self.__ano = valor
 
     @property
     def valor_diario(self):
-        return self.valor_diario
+        return self.__valor_diario
     
     @valor_diario.setter
     def valor_diario(self, valor):
-        self.valor_diario = valor
+        self.__valor_diario = valor
 
     def calculo_total_aluguel(self, dias, desconto=0):
         valor_total = self.valor_diario * dias

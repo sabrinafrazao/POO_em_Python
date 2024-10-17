@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Veículos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #1d96ec;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gerenciamento de Veículos</h2>
+        
+        <label for="tipoVeiculo">Tipo de Veículo</label>
+        <input type="text" id="tipoVeiculo" placeholder="Ex: moto">
+        
+        <label for="nomeVeiculo">Nome do Veículo</label>
+        <input type="text" id="nomeVeiculo" placeholder="Ex: Honda Civic">
+
+        <label for="anoVeiculo">Ano do Veículo</label>
+        <input type="number" id="anoVeiculo" placeholder="Ex: 2020">
+
+        <label for="valorDiario">Valor Diário de Aluguel (R$)</label>
+        <input type="number" id="valorDiario" placeholder="Ex: 200">
+
+        <label id="labelExtra" for="campoExtra">Tipo de Combustível</label>
+        <input type="text" id="campoExtra" placeholder="Ex: Gasolina">
+
+        <label for="diasAluguel">Dias de Aluguel</label>
+        <input type="number" id="diasAluguel" placeholder="Ex: 5">
+
+        <div class="buttons">
+            <button onclick="adicionarVeiculo()">Adicionar Veículo</button>
+            <button onclick="calcularAluguel()">Calcular Aluguel</button>
+        </div>
+    </div>
+
+    <script>
+        function atualizarCampos() {
+            const tipoVeiculo = document.getElementById("tipoVeiculo").value;
+            const labelExtra = document.getElementById("labelExtra");
+            const campoExtra = document.getElementById("campoExtra");
+
+            if (tipoVeiculo === "carro") {
+                labelExtra.textContent = "Tipo de Combustível";
+                campoExtra.placeholder = "Ex: Gasolina";
+            } else {
+                labelExtra.textContent = "Cilindrada (cc)";
+                campoExtra.placeholder = "Ex: 689";
+            }
+        }
+
+        function adicionarVeiculo() {
+            const nomeVeiculo = document.getElementById("nomeVeiculo").value;
+            const anoVeiculo = document.getElementById("anoVeiculo").value;
+            const valorDiario = document.getElementById("valorDiario").value;
+            const campoExtra = document.getElementById("campoExtra").value;
+            const tipoVeiculo = document.getElementById("tipoVeiculo").value;
+
+            if (!nomeVeiculo || !anoVeiculo || !valorDiario || !campoExtra) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            alert(`Veículo adicionado:\nNome: ${nomeVeiculo}\nAno: ${anoVeiculo}\nValor Diário: R$${valorDiario}\n${tipoVeiculo === "carro" ? "Combustível" : "Cilindrada"}: ${campoExtra}`);
+        }
+
+        function calcularAluguel() {
+            const diasAluguel = document.getElementById("diasAluguel").value;
+            const valorDiario = document.getElementById("valorDiario").value;
+
+            if (!diasAluguel || !valorDiario) {
+                alert("Por favor, preencha os campos de dias de aluguel e valor diário.");
+                return;
+            }
+
+            const valorTotal = diasAluguel * valorDiario;
+            alert(`Valor total do aluguel por ${diasAluguel} dias: R$${valorTotal.toFixed(2)}`);
+        }
+    </script>
+</body>
+</html>
