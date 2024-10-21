@@ -1,4 +1,4 @@
-from GerenciamentoVeiculos.VeiculoAlugar import VeiculoAlugar
+from VeiculoAlugar import VeiculoAlugar
 
 class Moto(VeiculoAlugar):
     

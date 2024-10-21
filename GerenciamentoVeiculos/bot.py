@@ -28,17 +28,16 @@ from botcity.web import WebBot, Browser, By
 # Import for integration with BotCity Maestro SDK
 from botcity.maestro import *
 from webdriver_manager.chrome import ChromeDriverManager
-#from Carro import Carro
+
+from VeiculoAlugar import VeiculoAlugar
+from Carro import Carro
 
 
 
 # Disable errors if we are not connected to Maestro
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
-bot = WebBot()
 
-def preencher_form():
-    #Carro.nome = "Carro"
-    bot.find_element('//*[@id="tipoVeiculo"]', By.XPATH).send_keys("Carro")
+
     
 
 def main():
@@ -66,9 +65,29 @@ def main():
     bot.browse("http://127.0.0.1:5500/GerenciamentoVeiculos/index.html")
 
     # Implement here your logic...
+    VeiculoAlugar.nome = "Honda"
+    VeiculoAlugar.ano = "2020"
+    Carro.tipo_combustivel = "Gasolina"
+    Carro.valor_diario = 200
+    VeiculoAlugar.dias = 5
 
-    bot.find_element('//*[@id="tipoVeiculo"]', By.XPATH).send_keys("Carro")
+
+    bot.find_element('//*[@id="nomeVeiculo"]', By.XPATH).send_keys(VeiculoAlugar.nome)
+    bot.find_element('//*[@id="anoVeiculo"]', By.XPATH).send_keys(VeiculoAlugar.ano)
+    bot.find_element('/html/body/div/div[1]/label[1]', By.XPATH).click()
+    elemento = '/html/body/div/div[1]/label[1]'
+
+    if elemento:
+        bot.find_element('//*[@id="campoExtra"]', By.XPATH).send_keys(Carro.tipo_combustivel)
+    else:
+        bot.find_element('//*[@id="campoExtra"]', By.XPATH).send_keys(Carro.tipo_combustivel)
     
+    bot.find_element('//*[@id="valorDiario"]', By.XPATH).send_keys(Carro.valor_diario)
+    bot.find_element('//*[@id="diasAluguel"]', By.XPATH).send_keys(VeiculoAlugar.dias)
+    bot.find_element('/html/body/div/div[2]/button', By.XPATH).click()
+
+    
+     
 
     # Wait 3 seconds before closing
     bot.wait(3000)
