@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Veículos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo geral */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .radio-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .radio-group:hover {
+            background-color: #e9f5ff;
+            border-color: #007bff;
+        }
+
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .radio-icon.selected {
+            background-color: #007bff;
+        }
+
+        .radio-icon.selected::before {
+            content: '✔';
+            color: white;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p#resultado {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Design responsivo para telas menores */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cadastro de Veículos</h1>
+
+        <!-- Formulário para adicionar veículo -->
+        <form id="formVeiculo">
+            <label for="nomeVeiculo">Nome do Veículo:</label>
+            <input type="text" id="nomeVeiculo" name="nomeVeiculo" placeholder="Ex: Honda Civic" required>
+
+            <label for="anoVeiculo">Ano:</label>
+            <input type="number" id="anoVeiculo" name="anoVeiculo" placeholder="Ex: 2020" required>
+
+            <label for="valorDiario">Valor Diário do Aluguel:</label>
+            <input type="number" id="valorDiario" name="valorDiario" placeholder="Ex: 150" required>
+
+            <label for="dias">Quantidade de Dias:</label>
+            <input type="number" id="dias" name="dias" placeholder="Ex: 15" required>
+
+            <label for="desconto">Desconto (5%):</label>
+            <input type="number" id="desconto" name="desconto"  value="5" readonly>
+            <p style="font-size: 12px; color: #555; margin-top: 1px;">Este desconto é aplicado ao valor total do aluguel.</p>
+
+            <!-- Radio buttons estilizados para tipo de veículo -->
+            <div class="radio-container">
+                <div class="radio-group" onclick="selectRadio('carroRadio')">
+                    <div id="carroIcon" class="radio-icon"></div>
+                    <label for="carroRadio">Carro</label>
+                    <input type="radio" id="carroRadio" name="tipoVeiculo" value="carro" onclick="exibirCampos()">
+                </div>
+                <div class="radio-group" onclick="selectRadio('motoRadio')">
+                    <div id="motoIcon" class="radio-icon"></div>
+                    <label for="motoRadio">Moto</label>
+                    <input type="radio" id="motoRadio" name="tipoVeiculo" value="moto" onclick="exibirCampos()">
+                </div>
+            </div>
+
+            <!-- Campos adicionais para Moto -->
+            <div id="campoMoto" class="hidden">
+                <label for="cilindrada">Cilindrada:</label>
+                <input type="number" id="cilindrada" name="cilindrada" placeholder="Ex: 500cc">
+            </div>
+
+            <!-- Campos adicionais para Carro -->
+            <div id="campoCarro" class="hidden">
+                <label for="combustivel">Tipo de Combustível:</label>
+                <input type="text" id="combustivel" name="combustivel" placeholder="Ex: Gasolina">
+                <div id="campoDescontoExtra" class="hidden">
+                    <label for="descontoExtra">Desconto Extra (10%):</label>
+                    <input type="number" id="descontoExtra" name="descontoExtra" value="10" readonly>
+                    <p style="font-size: 12px; color: #555; margin-top:1px;">Este desconto é aplicado ao valor total do aluguel.</p>
+                </div>
+            </div>
+
+            <!-- Botão para calcular aluguel -->
+            <button type="button" onclick="calcularAluguel()">Calcular Aluguel</button>
+        </form>
+
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        function selectRadio(radioId) {
+            // Desmarcar todos os radio buttons e ícones
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('.radio-icon').forEach(icon => icon.classList.remove('selected'));
+
+            // Selecionar o radio button e ícone clicados
+            let radio = document.getElementById(radioId);
+            let icon = document.getElementById(radioId.replace('Radio', 'Icon'));
+
+            radio.checked = true;
+            icon.classList.add('selected');
+
+            exibirCampos();
+        }
+
+        function exibirCampos() {
+            // Verifica qual radio button está marcado
+            let carroRadio = document.getElementById('carroRadio').checked;
+            let motoRadio = document.getElementById('motoRadio').checked;
+
+            // Exibe ou oculta campos específicos de carro ou moto
+            document.getElementById('campoCarro').classList.toggle('hidden', !carroRadio);
+            document.getElementById('campoMoto').classList.toggle('hidden', !motoRadio);
+
+            // Exibir ou ocultar o campo de desconto extra
+            document.getElementById('campoDescontoExtra').classList.toggle('hidden', !carroRadio);
+        }
+
+        function calcularAluguel() {
+    // Coletar os dados do formulário
+    let dados = {
+        nomeVeiculo: document.getElementById('nomeVeiculo').value,
+        anoVeiculo: document.getElementById('anoVeiculo').value,
+        valorDiario: parseFloat(document.getElementById('valorDiario').value), 
+        tipoVeiculo: document.getElementById('carroRadio').checked ? 'carro' : 'moto',
+        dias: parseInt(document.getElementById('dias').value), 
+        desconto: parseFloat(document.getElementById('desconto').value), 
+        cilindrada: document.getElementById('motoRadio').checked ? parseFloat(document.getElementById('cilindrada').value) : null, 
+        combustivel: document.getElementById('carroRadio').checked ? document.getElementById('combustivel').value : null
+    };
+
+    // Fazer a requisição AJAX para o back-end Flask
+    fetch('http://127.0.0.1:5000/calcular_aluguel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.valor_total) {
+            // Redirecionar para a página de resultado com os dados
+            window.location.href = `resultado.html?nomeVeiculo=${encodeURIComponent(dados.nomeVeiculo)}&anoVeiculo=${encodeURIComponent(dados.anoVeiculo)}&valorDiario=${encodeURIComponent(dados.valorDiario)}&dias=${encodeURIComponent(dados.dias)}&valor_total=${encodeURIComponent(data.valor_total)}`;
+        } else {
+            document.getElementById('resultado').innerText = 'Erro ao calcular aluguel.';
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        document.getElementById('resultado').innerText = 'Erro ao calcular aluguel.';
+    });
+}
+    </script>
+</body>
+</html>

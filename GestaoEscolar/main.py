@@ -2,30 +2,33 @@ from Aluno import Aluno
 from Curso import Curso
 from Escola import Escola
 
+from Curso import Curso
+
+
 def main():
-    # Criando alunos
-    aluno1 = Aluno("Ana", "2024001")
-    aluno2 = Aluno("Bruno", "2024002")
-    aluno3 = Aluno("Carlos", "2024003")
+  
+    escola = Escola("IFAM")
 
-    # Criando cursos
-    curso1 = Curso("Engenharia de Software", "ESW101")
-    curso2 = Curso("Ciência da Computação", "CSC102")
 
-    # Adicionando alunos aos cursos
-    curso1.add_alunos(aluno1)
-    curso1.add_alunos(aluno2)
-    curso2.add_alunos(aluno3)
+    escola.add_curso("Python para Iniciantes", "PY001")
+    escola.add_curso("Introdução à Ciência de Dados", "CD101")
 
-    # Criando uma escola
-    escola = Escola("Escola de Tecnologia IFAM")
-
-    # Adicionando cursos à escola
-    escola.add_curso(curso1)
-    escola.add_curso(curso2)
-
-    # Mostrando informações da escola, cursos e alunos
+ 
     escola.mostrar_cursos()
+
+ 
+    curso_python = escola.lista_cursos
+
+    for curso in escola.lista_cursos:
+        if curso.nome_curso == "Python para Iniciantes":
+            curso_python = curso
+            break
+
+    curso_python.add_alunos("Maria Silva", "2023001")
+    curso_python.add_alunos("João Santos", "2023002")
+
+
+    curso_python.mostrar_alunos()
 
 if __name__ == "__main__":
     main()
