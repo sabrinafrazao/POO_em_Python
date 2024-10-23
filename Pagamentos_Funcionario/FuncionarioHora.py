@@ -11,14 +11,14 @@ class FuncionarioHora(Funcionario):
 
 
     @property
-    def horas_trabalhadas(self):
+    def set_horas_trabalhadas(self):
         return self._horas_trabalhadas
     
     def validacao_horas(self, horas_trabalhadas):
         if horas_trabalhadas < 0:
             raise ValueError("As horas trabalhadas devem ser positivas!")
 
-    @horas_trabalhadas.setter
+    @set_horas_trabalhadas.setter
     def set_horas_trabalhadas(self, horas_trabalhadas: int):
         self.validacao_horas(horas_trabalhadas)
         self._horas_trabalhadas = horas_trabalhadas
