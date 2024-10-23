@@ -3,7 +3,8 @@ from FuncionarioHora import FuncionarioHora
 from FuncionarioMensal import FuncionarioMensal
 from FuncionarioComissionado import FuncionarioComissionado
 from FuncionarioProjeto import FuncionarioProjeto
-import datetime
+import calendar
+from datetime import date, timedelta
 
 
 def processar_pagamento(funcionario: Funcionario):
@@ -12,59 +13,73 @@ def processar_pagamento(funcionario: Funcionario):
     print("---------------------------------")
 
 
-def simular_pagamento_mensal(funcionario, mes, ano, feriados):
-    # Verifica se o mês é dezembro (12) para calcular o próximo mês corretamente
-    if mes == 12:
-        dias_no_mes = (datetime.date(ano + 1, 1, 1) - datetime.date(ano, mes, 1)).days
-    else:
-        dias_no_mes = (datetime.date(ano, mes + 1, 1) - datetime.date(ano, mes, 1)).days
+def calcular_horas_uteis_mes(ano, mes, feriados):
+  
+    horas_por_dia = 8 
 
-    horas_totais = 0
+    
+    dias_uteis = 0
 
-    for dia in range(1, dias_no_mes + 1):
-        data_atual = datetime.date(ano, mes, dia)
-        if data_atual.weekday() < 5 and data_atual not in feriados:  # Dias úteis e sem feriados
-            horas_totais += 8  # Assumindo 8 horas de trabalho por dia
+   
+    for dia in range(1, calendar.monthrange(ano, mes)[1] + 1):  
+        data_atual = date(ano, mes, dia)
+        
+        # Verificar se é um fim de semana (sábado ou domingo)
+        if data_atual.weekday() >= 5:  # Sábado (5) ou Domingo (6)
+            continue
+        
+        # Verificar se é um feriado
+        if data_atual in feriados:
+            continue
+        
+        # Se não for nem fim de semana nem feriado, é um dia útil
+        dias_uteis += 1
 
-    return funcionario.valor_hora * horas_totais
+    # Retornar o total de horas úteis no mês
+    return dias_uteis * horas_por_dia
+
+def simular_pagamento_mensal(funcionario: FuncionarioHora, mes, ano, feriados):
+
+    horas_trabalhadas_no_mes = calcular_horas_uteis_mes(ano, mes, feriados)
+    return funcionario.valor_hora * horas_trabalhadas_no_mes
 
 
-# Função principal
+
 def main():
     funcionarios = []
 
-    feriados = [datetime.date(2024, 12, 25), datetime.date(2024, 1, 1)]  # Exemplo de feriados.
+    feriados = [date(2024, 12, 25), date(2024, 1, 1)]  # Lista de feriados
 
     try:
-        funcionarios.append(FuncionarioHora("Antônio", 123456, 80, -25))
+        funcionarios.append(FuncionarioHora("Antônio", 123456, 160, 25))  # Exemplo de funcionário horista
     except ValueError as e:
         print(f"Erro ao criar funcionário: {e}")
 
     try:
-        funcionarios.append(FuncionarioMensal("Diego", 432335, 4560))
+        funcionarios.append(FuncionarioMensal("Diego", 432335, 4560))  # Funcionário mensal
     except ValueError as e:
         print(f"Erro ao criar funcionário: {e}")
 
     try:
-        funcionarios.append(FuncionarioComissionado("Jonas", 567786, 3000, 5000, 0.05))
+        funcionarios.append(FuncionarioComissionado("Jonas", 567786, 3000, 5000, 0.05))  # Comissionado
     except ValueError as e:
         print(f"Erro ao criar funcionário: {e}")
 
     try:
-        funcionarios.append(FuncionarioProjeto("Sabrina", 5679, 1000000))
+        funcionarios.append(FuncionarioProjeto("Sabrina", 5679, 1000000))  # Funcionário por projeto
     except ValueError as e:
         print(f"Erro ao criar funcionário: {e}")
 
+    # Processar pagamento de funcionários horistas com cálculo de horas úteis no mês de dezembro de 2024
     for funcionario in funcionarios:
-        processar_pagamento(funcionario)
+        if isinstance(funcionario, FuncionarioHora):
+            salario_mes = simular_pagamento_mensal(funcionario, 12, 2024, feriados)
+            print(f"Nome: {funcionario.nome}, Salário em dezembro de 2024: {salario_mes}\n")
+        else:
+            processar_pagamento(funcionario)
 
-    # Simulação do pagamento do funcionário horista no mês de dezembro
-    try:
-        print("Simulação de pagamento para um funcionário horista no mês de dezembro:")
-        salario_mes = simular_pagamento_mensal(funcionarios[0], 12, 2024, feriados)
-        print(f"Nome: {funcionarios[0].nome}, Salário para dezembro: {salario_mes:.2f}")
-    except IndexError:
-        print("Erro: Não há funcionário horista para simulação.")
 
 if __name__ == "__main__":
     main()
+
+
