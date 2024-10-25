@@ -1,0 +1,4 @@
+from .Funcionario import Funcionario
+from .FuncionarioHora import FuncionarioHorista
+from .FuncionarioMensal import FuncionarioMensalista
+from .FuncionarioComissionado import FuncionarioComissionado
