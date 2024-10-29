@@ -1,0 +1,40 @@
+1. Como a composição facilita a criação de relações complexas entre objetos?
+
+A composição permite que objetos sejam compostos de outros objetos, 
+criando um relacionamento "tem um" em vez de "é um". Nesse caso, por exemplo, 
+a classe Curso contém uma lista de objetos Aluno (ou seja, um curso "tem um" ou mais alunos), 
+e a classe Escola contém uma lista de objetos Curso. Assim, a composição permite organizar o sistema 
+em módulos independentes e reaproveitáveis, com cada classe cuidando da sua própria responsabilidade.
+
+
+
+2. Qual é a vantagem de usar composição em vez de herança neste  exercício? 
+
+A vantagem de usar composição em vez de herança é que ela dá mais flexibilidade. 
+Composição permite que as classes trabalhem juntas sem que uma dependa da outra por herança. 
+No caso, Curso e Escola usam instâncias de Aluno e Curso, mas não precisam de uma relação hierárquica. 
+Isso diminui a ligação entre as classes, permitindo que a gente faça mudanças em uma classe sem ter que 
+alterar as outras. Esse jeito de relacionar as classes deixa o sistema mais organizado e fácil de ampliar, 
+além de seguir a ideia de que cada classe deve ter uma única função.
+
+
+3. Como o encapsulamento é utilizado nas classes Aluno, Curso e Escola? 
+
+O encapsulamento é usado para proteger e organizar dados e comportamentos dentro de cada classe. 
+Na classe Aluno, os atributos nome e matrícula são protegidos e só podem ser manipulados pela própria
+classe, que tem um método para mostrar essas informações (mostrar_info). Na classe Curso, a lista de 
+alunos e as funções de adicionar e mostrar alunos estão dentro da própria classe, permitindo que apenas
+métodos internos possam mexer nesses dados. Da mesma forma, na classe Escola, o acesso à lista de cursos
+e suas funções também está protegido. Esse uso do encapsulamento garante que cada classe controle suas 
+informações e ações, aumentando a segurança e a organização do sistema.
+
+
+4. Como você pode estender este sistema para incluir novas funcionalidades, como notas dos alunos e professores para cada curso?
+
+Para melhorar o sistema e adicionar novas funcionalidades, pode - se incluir novos atributos e métodos nas classes que já existem. Por exemplo:
+
+Para as notas dos alunos, pode - se adicionar um atributo chamado notas na classe Aluno para guardar as notas de cada aluno. Também pode -se criar
+um método para adicionar essas notas e outro para calcular a média.
+
+Para os professores em cada curso, dá para adicionar um atributo chamado professor na classe Curso, que poderia ser uma instância de uma nova 
+classe chamada Professor. Essa nova classe poderia ter atributos como nome e especialidade, além de métodos para mostrar suas informações.
