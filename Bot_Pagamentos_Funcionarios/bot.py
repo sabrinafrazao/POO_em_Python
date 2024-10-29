@@ -46,7 +46,7 @@ def main():
     print(f"Task Parameters are: {execution.parameters}")
 
     bot = DesktopBot()
-    bot.execute(r"C:\Users\sabri\Desktop\POO_em_Python\Bot_Pagamentos_Funcionarios\dist\App.exe")
+    bot.execute(r"C:\Users\matutino\Desktop\POO_em_Python\Bot_Pagamentos_Funcionarios\dist\App.exe")
 
     # Cadastro do primeiro funcionario
 
