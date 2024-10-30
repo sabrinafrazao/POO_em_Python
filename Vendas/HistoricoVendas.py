@@ -15,9 +15,11 @@ class HistoricoVendas:
         totais = {}
 
         for venda in self.vendas:
-            totais = [venda.nome] = reduce( lambda total, v: total + v.total_venda(),
-                filter(lambda x: x.nome_produto == venda.nome_produto, self.vendas),
+            totais = [venda.nome] = reduce( lambda total, v: total + v.total_vendas(),
+                filter(lambda x: x.nome == venda.nome, self.vendas),
                 0)
             
         return totais
+
+
 
