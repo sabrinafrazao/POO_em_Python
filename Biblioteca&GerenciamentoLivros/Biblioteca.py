@@ -52,11 +52,12 @@ class Biblioteca:
         print(f"Dados carregados em {arquivo}.")
    
 
-    def exportar_json(self, arquivo = "Arquivo_json.json"):
-        dados = [{"livro": livro.titulo, "autor": livro.autor, "ano publicacao": livro.ano_publicacao, "genero": livro.genero} for livro in self.livros]
+    def exportar_json(self, arquivo="Arquivo_json.json"):
+        dados = [{"titulo": livro.titulo, "autor": livro.autor, "ano_publicacao": livro.ano_publicacao, "genero": livro.genero} for livro in self.livros]
         with open(arquivo, "w") as arquivo_json:
             json.dump(dados, arquivo_json)
         print(f"Dados salvos em {arquivo}.")
+
 
     def importar_json(self, arquivo = "Arquivo_json.json"):
         with open(arquivo, "r") as arquivo_json:
@@ -73,11 +74,11 @@ class Biblioteca:
                 escritor.writerow([livro.titulo, livro.autor, livro.ano_publicacao, livro.genero])
         print(f"Dados salvos em {arquivo}.")
 
-    def importar_csv(self, arquivo = "Arquivo_csv.csv"):
+    def importar_csv(self, arquivo="Arquivo_csv.csv"):
         with open(arquivo, "r") as arquivo_csv:
             leitor = csv.reader(arquivo_csv)
             next(leitor) 
-            self.alunos = [Livro(linha[0], int(linha[1]), eval(linha[2])) for linha in leitor]
+            self.livros = [Livro(linha[0], linha[1], int(linha[2]), linha[3]) for linha in leitor]  # corrigido self.alunos para self.livros
         print(f"Dados carregados de {arquivo}.")
 
     def exportar_pickle(self, arquivo="Arquivo_pkl.pkl"):
